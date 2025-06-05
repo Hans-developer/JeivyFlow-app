@@ -1,0 +1,200 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JeivyFlow</title>
+    <link href="{% static 'primeflow/css/main.css' %}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            background-image: url("{% static 'primeflow/img/prime.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white;
+            padding: 150px 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        @media (max-width: 550px) {
+            .hero-section {
+                height: 70vh;
+                padding: 50px 0;
+                background-attachment: scroll;
+                background-size: 100% 100%; /* Fuerza a la imagen a cubrir exactamente el contenedor */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        .category-card {
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-card {
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .price {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .original-price {
+            text-decoration: line-through;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'index'%}">
+                <i class="bi bi-shop"></i> JeivyFlow
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#inicio">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#productos">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contacto">Contacto</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="/admin/">Admin</a>
+                    </li>
+                </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-section responsive">
+        <div class="container text-center">
+            
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categorías -->
+    {%if productos%}
+    <section id="categorias" class="py-3 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Nuestros Productos</h2>
+        </div>
+    </section>
+    {%else%}
+
+    <section id="categorias" class="py-3 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">No hay productos disponibles</h2>
+        </div>
+    </section>
+
+    {%endif%}
+
+    <!-- Productos Destacados -->
+    <section id="productos" class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Producto 1 -->
+                {%for p in productos%}
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="card product-card h-100 center">
+                        <div class="position-relative">
+                            <img src="{{p.imagen.url}}" class="card-img-top" alt="{{p.nombre}}">
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h6 class="card-title">{{p.nombre}}</h6>
+                            <p class="card-text text-muted small">{{p.descripcion}}</p>
+                            Publicado el {{p.created_on}}
+                            <div class="mt-auto">
+                                <div class="d-flex align-items-center mb-2 center mt-3">
+                                    <span class="price"> <i class="bi bi-cash-coin"></i> ${{p.precio}}</span>
+                                </div>
+                                <a href="https://wa.me/56926339682?text=Hola%20quiero%20consultar%20por%20{{p.nombre}}" target="_blanck" rel="noopener noreferrer" class="btn btn-primary btn-sm w-100">
+                                    <i class="bi bi-whatsapp"></i> Contactar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contacto" class="bg-dark text-light py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h5><i class="bi bi-shop"></i> JeivyFlow</h5>
+                    <p>Tu tienda de confianza desde 2024. Calidad y servicio garantizado para toda la familia.</p>
+                    <div class="d-flex gap-3">
+                       
+                        <a href="https://wa.me/56926339682?text=Hola%20quiero%20hacer%20una%20consulta" target="_blanck" rel="noopener noreferrer" class="text-light"><i class="bi bi-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <h6>¿Quienes somos?</h6>
+                    Vesinos de confianza donde encontraras amigos y personas dispuestas a entender tus nesesidades
+                </div>
+                <div class="col-md-3">
+                    <h6>Atención al Cliente</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="https://wa.me/56926339682?text=Hola%20quiero%20hacer%20una%20consulta" target="_blanck" rel="noopener noreferrer" class="text-light text-decoration-none">Whatsapp</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>Contacto</h6>
+                    <p class="mb-1"><i class="bi bi-geo-alt"></i> Calle cordoba 1068, Don sebastian de Rauquen Curico</p>
+                    <p class="mb-1"><i class="bi bi-telephone"></i> +56926339682</p>
+                    <p class="mb-0"><i class="bi bi-clock"></i> Lun-Sáb: 9:00-21:00</p>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2025 JaivyFlow. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="{% static 'primeflow/js/main.js'%}"></script>
+</body>
+</html>
